@@ -1,7 +1,7 @@
 # UA-Extract-purepy
 
 
-**A pure python, lighter fork of UA-Extract**
+**A lighter fork of UA-Extract without the rust depedendency that i can use in pyodide**
 
 
 ---
