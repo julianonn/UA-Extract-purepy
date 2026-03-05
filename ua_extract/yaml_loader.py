@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import TypedDict
 import yaml
-import ahocorasick_rs
+from ahocorapy.keywordtree import KeywordTree
 from pathlib import Path
 import warnings
 
@@ -19,6 +19,21 @@ import ua_extract
 from .lazy_regex import RegexLazyIgnore
 from .settings import BOUNDED_REGEX, DDCache, ROOT
 from .enums import AppType
+
+
+
+class PythonAhoCorasick(KeywordTree):
+    def __init__(self, patterns):
+        from ahocorapy.keywordtree import KeywordTree
+        self.tree = KeywordTree(case_insensitive=True)
+        for p in patterns:
+            self.tree.add(str(p))
+        self.tree.finalize()
+
+    def find_matches_as_strings(self, text):
+        matches = self.tree.search_all(text)
+        return [res[0] for res in matches]
+
 
 
 class RegexLoader:
@@ -96,7 +111,7 @@ class RegexLoader:
 
         return all_regexes
 
-    def load_ahocorasick_patterns(self) -> ahocorasick_rs.AhoCorasick | None:
+    def load_ahocorasick_patterns(self) -> PythonAhoCorasick | None:
         """
         Load AhoCorasick words from file, or expand from regexes.
         """
@@ -114,7 +129,7 @@ class RegexLoader:
             if words := set(self.load_from_yaml(ac_fixture)):
                 all_corasick_words.update(words)
 
-        ac = ahocorasick_rs.AhoCorasick(all_corasick_words) if all_corasick_words else None
+        ac = PythonAhoCorasick(all_corasick_words) if all_corasick_words else None
         DDCache['corasick'][self.cache_name] = ac
 
         return ac

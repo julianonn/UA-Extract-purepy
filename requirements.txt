@@ -1,4 +1,4 @@
-ahocorasick-rs
+ahocorapy
 pyyaml
 regex
 aiohttp
