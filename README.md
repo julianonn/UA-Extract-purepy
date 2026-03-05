@@ -1,3 +1,10 @@
+# UA-Extract-purepy
+
+
+**A pure python, lighter fork of UA-Extract**
+
+
+---
 # UA-Extract
 
 A Python user-agent parser and device detector powered by Matomo’s regex database — accurate, updatable, and production-ready.
