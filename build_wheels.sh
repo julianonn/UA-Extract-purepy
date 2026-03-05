@@ -13,19 +13,19 @@ if ! command -v python3 &> /dev/null; then
   exit 1
 fi
 
+rm -rf "$DIST_DIR"
 mkdir -p "$DIST_DIR"
 
 cd "$SCRIPT_DIR"
 python3 -m pip install --quiet build
 python3 -m build --wheel --quiet --outdir "$DIST_DIR"
 
-WHEEL_FILE=$(ls -t "$DIST_DIR"/ua_extract*.whl | head -1)
+WHEEL_FILE=$(ls "$DIST_DIR" | grep .whl | head -1)
 
-if [ -f "$WHEEL_FILE" ]; then
-  echo "[build-wheels] Built: $(basename "$WHEEL_FILE")"
-  cd "$DIST_DIR"
-  mv "$WHEEL_FILE" "$DIST_DIR/ua_extract_purepy-latest.whl"
-  echo "[build-wheels] Symlink: ua_extract_purepy-latest.whl"
+if [ -n "$WHEEL_FILE" ]; then
+  echo "[build-wheels] Built: $WHEEL_FILE"
+  echo "$WHEEL_FILE" > "$DIST_DIR/latest_wheel.txt"
+  echo "[build-wheels] Created pointer: latest_wheel.txt -> $WHEEL_FILE"
 else
   echo "[build-wheels] ERROR: Wheel build failed"
   exit 1
