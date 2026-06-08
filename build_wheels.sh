@@ -17,7 +17,7 @@ rm -rf "$DIST_DIR"
 mkdir -p "$DIST_DIR"
 
 cd "$SCRIPT_DIR"
-python3 -m pip install --quiet build
+python3 -m pip install --quiet build --break-system-packages 2>/dev/null || python3 -m pip install --quiet build
 python3 -m build --wheel --quiet --outdir "$DIST_DIR"
 
 WHEEL_FILE=$(ls "$DIST_DIR" | grep .whl | head -1)
