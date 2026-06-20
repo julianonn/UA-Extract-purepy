@@ -8,8 +8,8 @@ DIST_DIR="$SCRIPT_DIR/dist"
 
 echo "[build-wheels] Building ua-extract-purepy wheel..."
 
-if ! command -v python3 &> /dev/null; then
-  echo "[build-wheels] ERROR: python3 not found"
+if ! command -v uv &> /dev/null; then
+  echo "[build-wheels] ERROR: uv not found"
   exit 1
 fi
 
@@ -17,8 +17,7 @@ rm -rf "$DIST_DIR"
 mkdir -p "$DIST_DIR"
 
 cd "$SCRIPT_DIR"
-python3 -m pip install --quiet build --break-system-packages 2>/dev/null || python3 -m pip install --quiet build
-python3 -m build --wheel --quiet --outdir "$DIST_DIR"
+uv build --wheel --no-build-logs --out-dir "$DIST_DIR" .
 
 WHEEL_FILE=$(ls "$DIST_DIR" | grep .whl | head -1)
 
