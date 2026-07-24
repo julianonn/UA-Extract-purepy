@@ -19,7 +19,14 @@ mkdir -p "$DIST_DIR"
 cd "$SCRIPT_DIR"
 uv build --wheel --no-build-logs --out-dir "$DIST_DIR" .
 
-WHEEL_FILE=$(ls "$DIST_DIR" | grep .whl | head -1)
+WHEEL_FILE=""
+for file in "$DIST_DIR"/*.whl; do
+  if [ -f "$file" ]; then
+    WHEEL_FILE="$(basename "$file")"
+    break
+  fi
+done
+
 
 if [ -n "$WHEEL_FILE" ]; then
   echo "[build-wheels] Built: $WHEEL_FILE"
