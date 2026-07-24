@@ -300,7 +300,6 @@ class DeviceDetector:
                 except KeyError:
                     self.all_details['device'] = device_data
 
-            # ponytail: assume Macintosh desktop for macOS if model is empty
             if self.os_name() in ('Mac', 'Mac OS X', 'macOS') and not self.device_model():
                 device_data = {
                     'brand': 'Apple',
